@@ -1,3 +1,5 @@
+import { readDir } from '/utils/readDir.ts';
+
 const __dirname = new URL('.', import.meta.url).pathname;
 
 function getDef(path: string): Promise<string> {
@@ -10,7 +12,7 @@ function getDefs(paths: string[]): Promise<string[]> {
 
 async function getAllGQLFiles() {
 	const files = [];
-	for await (const path of Deno.readDir(__dirname)) {
+	for await (const path of readDir(__dirname, { recursive: true })) {
 		if (path.isFile && path.name.endsWith('.gql')) {
 			files.push(path.name);
 		}
