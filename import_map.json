@@ -1,6 +1,8 @@
 {
   "imports": {
     "/": "./src/",
-    "./": "./src/"
+    "./": "./",
+    "http": "https://deno.land/std@0.166.0/http/server.ts",
+    "toruk": "https://deno.land/x/toruk@0.2.0/mod.ts"
   }
 }
