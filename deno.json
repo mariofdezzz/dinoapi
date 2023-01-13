@@ -1,8 +1,8 @@
 {
   "importMap": "./import_map.json",
   "tasks": {
-    "dev": "deno run --watch --allow-net src/index.ts",
-    "start": "deno run --allow-net src/index.ts"
+    "dev": "deno run --watch --allow-net --allow-read src/index.ts",
+    "start": "deno run --allow-net --allow-read src/index.ts"
   },
   "fmt": {
     "options": {

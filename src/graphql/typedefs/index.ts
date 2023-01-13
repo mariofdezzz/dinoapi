@@ -1,16 +1,9 @@
 import { gql } from 'graphql_tag';
+import { getLiterals } from './getLiterals.ts';
 
-export const typeDefs = gql`
-  type Person {
-    name: String!
-    phone: String
-    street: String!
-    city: String!
-    id: ID!
-  }
-
-  type Query {
-    personCount: Int!
-    allPersons: [Person]!
-  } 
-`;
+export const typeDefs = gql(
+	await getLiterals([
+		'Person.gql',
+		'Query.gql',
+	]),
+);
