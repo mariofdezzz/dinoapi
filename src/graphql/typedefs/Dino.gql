@@ -1,0 +1,9 @@
+type Dino {
+	name: String!
+	temporalRange: Epoch!
+	specie: Specie!
+	# locations: Continent[]!
+	weight: Int!
+	length: Int!
+	height: Int!
+}

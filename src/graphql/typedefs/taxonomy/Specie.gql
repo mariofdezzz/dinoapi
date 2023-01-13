@@ -1,0 +1,5 @@
+type Specie {
+	name: String!
+	meaning: String!
+	family: Family!
+}

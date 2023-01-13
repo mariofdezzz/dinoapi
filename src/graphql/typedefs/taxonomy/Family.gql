@@ -1,0 +1,4 @@
+type Family {
+	name: String!
+	kingdom: Kingdom!
+}
