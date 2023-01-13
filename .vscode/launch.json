@@ -1,0 +1,16 @@
+{
+	"version": "0.2.0",
+	"configurations": [
+		{
+			"request": "launch",
+			"name": "Launch Program",
+			"type": "pwa-node",
+			"program": "${file}",
+			"cwd": "${workspaceFolder}",
+			"runtimeExecutable": "/opt/homebrew/bin/deno",
+			"runtimeArgs": ["run", "--inspect-brk", "--allow-all"],
+			"attachSimplePort": 9229,
+			"outputCapture": "std"
+		}
+	]
+}
