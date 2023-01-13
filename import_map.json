@@ -6,6 +6,9 @@
     "http": "https://deno.land/std@0.166.0/http/server.ts",
     "toruk": "https://deno.land/x/toruk@0.2.0/mod.ts",
     "gql": "https://deno.land/x/gql@1.1.2/mod.ts",
+    "gql/common": "https://deno.land/x/gql@1.1.2/common.ts",
+    "gql/render": "https://deno.land/x/gql@1.1.2/graphiql/render.ts",
+    "gql/types": "https://deno.land/x/gql@1.1.2/types.ts",
     "graphql_tools": "https://deno.land/x/graphql_tools@0.0.2/mod.ts",
     "graphql_tag": "https://deno.land/x/graphql_tag@0.0.1/mod.ts",
     "postgres": "https://deno.land/x/postgres@v0.14.0/mod.ts"

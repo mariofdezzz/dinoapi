@@ -1,4 +1,4 @@
-import { GraphQLHTTP } from 'gql';
+import { GraphQLHTTP } from '/wrappers/graphqlHttp.ts';
 import { RouteHandler } from 'toruk';
 import { schema } from '/graphql/index.ts';
 
