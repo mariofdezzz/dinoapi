@@ -2,6 +2,7 @@
   "imports": {
     "/": "./src/",
     "./": "./",
+    "@/": "./src/models/",
     "http": "https://deno.land/std@0.166.0/http/server.ts",
     "toruk": "https://deno.land/x/toruk@0.2.0/mod.ts",
     "gql": "https://deno.land/x/gql@1.1.2/mod.ts",
