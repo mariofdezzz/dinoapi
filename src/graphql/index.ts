@@ -1,16 +1,5 @@
-import { gql } from 'graphql_tag';
 import { makeExecutableSchema } from 'graphql_tools';
-
-const typeDefs = gql`
-  type Query {
-    hello: String
-  }
-`;
-
-const resolvers = {
-	Query: {
-		hello: () => `Hello, World!`,
-	},
-};
+import { resolvers } from './resolvers/index.ts';
+import { typeDefs } from './typedefs/index.ts';
 
 export const schema = makeExecutableSchema({ resolvers, typeDefs });
