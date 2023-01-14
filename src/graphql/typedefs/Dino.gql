@@ -4,6 +4,6 @@ type Dino {
 	specie: Specie!
 	# locations: Continent[]!
 	weight: Int!
-	length: Int!
-	height: Int!
+	length: Float!
+	height: Float!
 }
