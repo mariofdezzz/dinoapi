@@ -5,7 +5,7 @@ import { Specie } from '@/taxonomy/Specie.ts';
 import { Epoch } from '@/time/Epoch.ts';
 import { Era } from '@/time/Era.ts';
 import { Period } from '@/time/Period.ts';
-import type { PoolClient } from 'postgres';
+import type { QueryObjectResult } from 'postgres/query/query.ts';
 import { Pool } from 'postgres';
 import {
 	DBDino,
@@ -18,7 +18,18 @@ import {
 } from './types.ts';
 
 export class DB {
-	private constructor(private connection: PoolClient) {}
+	private constructor(private pool: Pool) {}
+
+	private async queryDB<T>(
+		query: string,
+	): Promise<QueryObjectResult<T>> {
+		const conn = await this.pool.connect();
+
+		const result = await conn.queryObject<T>(query);
+
+		conn.release();
+		return result;
+	}
 
 	static async instance(): Promise<DB> {
 		const pool = new Pool(
@@ -34,41 +45,30 @@ export class DB {
 					],
 				},
 			},
-			3,
+			20,
 			true,
 		);
 
-		const connection = await pool.connect();
+		// const connection = await pool.connect();
 
-		return new DB(connection);
+		return new DB(pool);
 	}
 
 	async getAllDino(): Promise<Dino[] | Error> {
 		try {
-			const dinoResult = await this.connection.queryObject<DBDino>(`
+			const dinoResult = await this.queryDB<DBDino>(`
 				SELECT *
 				FROM dino
       `);
 			const dinos = dinoResult.rows;
-			const result: Dino[] = [];
 
-			for await (const dino of dinos) {
-				result.push({
+			return await Promise.all(
+				dinos.map<Promise<Dino>>(async (dino) => ({
 					...dino,
 					specie: await this.getSpecie(dino.specie),
 					temporalRange: await this.getTemporalRange(dino.temporalRange),
-				});
-			}
-
-			return result;
-			// FIXME: Solve asyncrhonous problem
-			// return await Promise.all(
-			// 	dinos.map<Promise<Dino>>(async (dino) => ({
-			// 		...dino,
-			// 		specie: await this.getSpecie(dino.specie),
-			// 		temporalRange: await this.getTemporalRange(dino.temporalRange),
-			// 	})),
-			// );
+				})),
+			);
 		} catch (error) {
 			return error;
 		}
@@ -76,7 +76,7 @@ export class DB {
 
 	private async getSpecie(id: number): Promise<Specie> {
 		try {
-			const specieResult = await this.connection.queryObject<DBSpecie>(`
+			const specieResult = await this.queryDB<DBSpecie>(`
 				SELECT *
 				FROM specie
 				WHERE id = ${id}
@@ -94,7 +94,7 @@ export class DB {
 
 	private async getFamily(id: number): Promise<Family> {
 		try {
-			const familyResult = await this.connection.queryObject<DBFamily>(`
+			const familyResult = await this.queryDB<DBFamily>(`
 				SELECT *
 				FROM family
 				WHERE id = ${id}
@@ -112,7 +112,7 @@ export class DB {
 
 	private async getKingdom(id: number): Promise<Kingdom> {
 		try {
-			const kingdomResult = await this.connection.queryObject<DBKingdom>(`
+			const kingdomResult = await this.queryDB<DBKingdom>(`
 				SELECT *
 				FROM kingdom
 				WHERE id = ${id}
@@ -127,7 +127,7 @@ export class DB {
 
 	private async getTemporalRange(id: number): Promise<Epoch> {
 		try {
-			const epochResult = await this.connection.queryObject<DBEpoch>(`
+			const epochResult = await this.queryDB<DBEpoch>(`
 				SELECT *
 				FROM epoch
 				WHERE id = ${id}
@@ -145,7 +145,7 @@ export class DB {
 
 	private async getPeriod(id: number): Promise<Period> {
 		try {
-			const periodResult = await this.connection.queryObject<DBPeriod>(`
+			const periodResult = await this.queryDB<DBPeriod>(`
 				SELECT *
 				FROM period
 				WHERE id = ${id}
@@ -163,7 +163,7 @@ export class DB {
 
 	private async getEra(id: number): Promise<Era> {
 		try {
-			const eraResult = await this.connection.queryObject<DBEra>(`
+			const eraResult = await this.queryDB<DBEra>(`
 				SELECT *
 				FROM era
 				WHERE id = ${id}
