@@ -5,7 +5,8 @@ import { Specie } from '@/taxonomy/Specie.ts';
 import { Epoch } from '@/time/Epoch.ts';
 import { Era } from '@/time/Era.ts';
 import { Period } from '@/time/Period.ts';
-import * as postgres from 'postgres';
+import type { PoolClient } from 'postgres';
+import { Pool } from 'postgres';
 import {
 	DBDino,
 	DBEpoch,
@@ -17,11 +18,11 @@ import {
 } from './types.ts';
 
 export class DB {
-	private constructor(private connection: postgres.PoolClient) {}
+	private constructor(private connection: PoolClient) {}
 
 	static async instance(): Promise<DB> {
-		const dbUrl = Deno.env.get('DATABASE_CONN_URL');
-		const pool = new postgres.Pool(dbUrl, 3, true);
+		const connUrl = Deno.env.get('DATABASE_CONN_URL');
+		const pool = new Pool(connUrl, 3, true);
 
 		const connection = await pool.connect();
 
@@ -33,7 +34,8 @@ export class DB {
 			const dinoResult = await this.connection.queryObject<DBDino>(`
 				SELECT *
 				FROM dino
-      `);
+				LIMIT 1
+      `); // --> Solve conn fails
 			const dinos = dinoResult.rows;
 
 			return await Promise.all(
