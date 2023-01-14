@@ -1,6 +1,6 @@
 import { DB } from '/db/index.ts';
 
-const db = await DB.instance();
+const db = new DB();
 
 export const resolvers = {
 	Query: {

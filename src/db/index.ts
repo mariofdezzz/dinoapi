@@ -18,21 +18,10 @@ import {
 } from './types.ts';
 
 export class DB {
-	private constructor(private pool: Pool) {}
+	private pool: Pool;
 
-	private async queryDB<T>(
-		query: string,
-	): Promise<QueryObjectResult<T>> {
-		const conn = await this.pool.connect();
-
-		const result = await conn.queryObject<T>(query);
-
-		conn.release();
-		return result;
-	}
-
-	static async instance(): Promise<DB> {
-		const pool = new Pool(
+	constructor() {
+		this.pool = new Pool(
 			{
 				user: Deno.env.get('DB_USER'),
 				password: Deno.env.get('DB_PASS'),
@@ -48,10 +37,17 @@ export class DB {
 			20,
 			true,
 		);
+	}
 
-		// const connection = await pool.connect();
+	private async queryDB<T>(
+		query: string,
+	): Promise<QueryObjectResult<T>> {
+		const conn = await this.pool.connect();
 
-		return new DB(pool);
+		const result = await conn.queryObject<T>(query);
+
+		conn.release();
+		return result;
 	}
 
 	async getAllDino(): Promise<Dino[] | Error> {
