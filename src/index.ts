@@ -1,7 +1,7 @@
 import { serve } from 'http';
-import { router } from '/router/index.ts';
+import { routeHandler } from '/router/index.ts';
 
-serve(router, {
+serve(routeHandler, {
 	onListen({ port }) {
 		console.log(`Listening on http://localhost:${port}/graphql`);
 	},

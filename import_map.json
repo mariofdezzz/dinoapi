@@ -4,7 +4,7 @@
     "./": "./",
     "@/": "./src/models/",
     "http": "https://deno.land/std@0.166.0/http/server.ts",
-    "toruk": "https://deno.land/x/toruk@0.2.0/mod.ts",
+    "toruk": "https://deno.land/x/toruk@0.3.0/mod.ts",
     "gql": "https://deno.land/x/gql@1.1.2/mod.ts",
     "gql/common": "https://deno.land/x/gql@1.1.1/common.ts",
     "gql/render": "https://deno.land/x/gql@1.1.1/graphiql/render.ts",

@@ -1,16 +1,13 @@
-import { httpRouter } from 'toruk';
+import { Router } from 'toruk';
 import { handler } from './graphql.ts';
 
-export const router = httpRouter({
+const router = new Router({
 	routes: [
 		{
 			path: '/graphql',
 			handler,
 		},
-		{
-			method: 'POST',
-			path: '/graphql',
-			handler,
-		},
 	],
 });
+
+export const routeHandler = router.toHandler();
