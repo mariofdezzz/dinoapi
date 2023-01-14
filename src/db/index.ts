@@ -21,8 +21,22 @@ export class DB {
 	private constructor(private connection: PoolClient) {}
 
 	static async instance(): Promise<DB> {
-		const connUrl = Deno.env.get('DATABASE_CONN_URL');
-		const pool = new Pool(connUrl, 3, true);
+		const pool = new Pool(
+			{
+				user: Deno.env.get('DB_USER'),
+				password: Deno.env.get('DB_PASS'),
+				database: Deno.env.get('DB_NAME'),
+				hostname: Deno.env.get('DB_HOST'),
+				port: Number(Deno.env.get('DB_PORT')),
+				tls: {
+					caCertificates: [
+						Deno.env.get('DB_CERT')?.replace(/\\n/g, '\n') ?? '',
+					],
+				},
+			},
+			3,
+			true,
+		);
 
 		const connection = await pool.connect();
 
@@ -34,17 +48,27 @@ export class DB {
 			const dinoResult = await this.connection.queryObject<DBDino>(`
 				SELECT *
 				FROM dino
-				LIMIT 1
-      `); // --> Solve conn fails
+      `);
 			const dinos = dinoResult.rows;
+			const result: Dino[] = [];
 
-			return await Promise.all(
-				dinos.map<Promise<Dino>>(async (dino) => ({
+			for await (const dino of dinos) {
+				result.push({
 					...dino,
 					specie: await this.getSpecie(dino.specie),
 					temporalRange: await this.getTemporalRange(dino.temporalRange),
-				})),
-			);
+				});
+			}
+
+			return result;
+			// FIXME: Solve asyncrhonous problem
+			// return await Promise.all(
+			// 	dinos.map<Promise<Dino>>(async (dino) => ({
+			// 		...dino,
+			// 		specie: await this.getSpecie(dino.specie),
+			// 		temporalRange: await this.getTemporalRange(dino.temporalRange),
+			// 	})),
+			// );
 		} catch (error) {
 			return error;
 		}
