@@ -55,7 +55,7 @@ export const resolvers = {
 		async fullName(epoch: DBEpoch) {
 			const period = await db.periods.find(epoch.period);
 
-			return `${period.name} ${epoch.name}`;
+			return `${epoch.name} ${period.name}`;
 		},
 	},
 	Period: {
