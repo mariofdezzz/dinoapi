@@ -1,3 +1,5 @@
+import { FilterParams } from '../../db/controllers/types.ts';
+import { DB } from '/db/index.ts';
 import {
 	DBDino,
 	DBEpoch,
@@ -5,8 +7,6 @@ import {
 	DBPeriod,
 	DBSpecie,
 } from '/db/models/types.ts';
-import { DB } from '/db/index.ts';
-import { FilterParams, SortOrder } from '../../db/controllers/types.ts';
 
 const db = new DB();
 
