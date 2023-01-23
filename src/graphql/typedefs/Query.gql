@@ -1,3 +1,7 @@
 type Query {
-  allDinos: [Dino]!
+  dinos: [Dino]!
+  era(id: Int!): Era!
+  period(id: Int!): Period!
+  periods: [Period]!
+  epochs: [Epoch]!
 }
