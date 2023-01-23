@@ -28,7 +28,7 @@ export const resolvers = {
 		},
 	},
 	Dino: {
-		async temporalRange(dino: DBDino) {
+		async epoch(dino: DBDino) {
 			return await db.epochs.find(dino.temporalRange);
 		},
 		async specie(dino: DBDino) {
@@ -48,6 +48,11 @@ export const resolvers = {
 	Epoch: {
 		async period(epoch: DBEpoch) {
 			return await db.periods.find(epoch.period);
+		},
+		async fullName(epoch: DBEpoch) {
+			const period = await db.periods.find(epoch.period);
+
+			return `${period.name} ${epoch.name}`;
 		},
 	},
 	Period: {

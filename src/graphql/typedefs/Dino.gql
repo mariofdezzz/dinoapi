@@ -1,6 +1,6 @@
 type Dino {
 	name: String!
-	temporalRange: Epoch!
+	epoch: Epoch!
 	specie: Specie!
 	# locations: Continent[]!
 	weight: Int!

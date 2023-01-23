@@ -1,4 +1,5 @@
 type Epoch {
 	name: String!
+	fullName: String!
 	period: Period!
 }
