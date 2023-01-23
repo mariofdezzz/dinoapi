@@ -5,8 +5,9 @@ import { Specie } from '@/taxonomy/Specie.ts';
 import { Epoch } from '@/time/Epoch.ts';
 import { Era } from '@/time/Era.ts';
 import { Period } from '@/time/Period.ts';
-import type { QueryObjectResult } from 'postgres/query/query.ts';
 import { Pool } from 'postgres';
+import type { QueryObjectResult } from 'postgres/query/query.ts';
+import { CrudController } from './controllers/CrudController.ts';
 import {
 	DBDino,
 	DBEpoch,
@@ -15,10 +16,21 @@ import {
 	DBKingdom,
 	DBPeriod,
 	DBSpecie,
-} from './types.ts';
+} from './models/types.ts';
 
 export class DB {
 	private pool: Pool;
+
+	// Controllers
+	public dinos: CrudController<DBDino>;
+
+	public family: CrudController<DBFamily>;
+	public kingdom: CrudController<DBKingdom>;
+	public specie: CrudController<DBSpecie>;
+
+	public eras: CrudController<DBEra>;
+	public epochs: CrudController<DBEpoch>;
+	public periods: CrudController<DBPeriod>;
 
 	constructor() {
 		this.pool = new Pool(
@@ -37,9 +49,19 @@ export class DB {
 			20,
 			true,
 		);
+
+		this.dinos = new CrudController(this, 'dino');
+
+		this.family = new CrudController(this, 'family');
+		this.kingdom = new CrudController(this, 'kingdom');
+		this.specie = new CrudController(this, 'specie');
+
+		this.eras = new CrudController(this, 'era');
+		this.epochs = new CrudController(this, 'epoch');
+		this.periods = new CrudController(this, 'period');
 	}
 
-	private async queryDB<T>(
+	public async queryDB<T>(
 		query: string,
 	): Promise<QueryObjectResult<T>> {
 		const conn = await this.pool.connect();
@@ -70,7 +92,7 @@ export class DB {
 		}
 	}
 
-	private async getSpecie(id: number): Promise<Specie> {
+	async getSpecie(id: number): Promise<Specie> {
 		try {
 			const specieResult = await this.queryDB<DBSpecie>(`
 				SELECT *
@@ -88,7 +110,7 @@ export class DB {
 		}
 	}
 
-	private async getFamily(id: number): Promise<Family> {
+	async getFamily(id: number): Promise<Family> {
 		try {
 			const familyResult = await this.queryDB<DBFamily>(`
 				SELECT *
@@ -106,7 +128,7 @@ export class DB {
 		}
 	}
 
-	private async getKingdom(id: number): Promise<Kingdom> {
+	async getKingdom(id: number): Promise<Kingdom> {
 		try {
 			const kingdomResult = await this.queryDB<DBKingdom>(`
 				SELECT *
@@ -121,7 +143,7 @@ export class DB {
 		}
 	}
 
-	private async getTemporalRange(id: number): Promise<Epoch> {
+	async getTemporalRange(id: number): Promise<Epoch> {
 		try {
 			const epochResult = await this.queryDB<DBEpoch>(`
 				SELECT *
@@ -139,7 +161,21 @@ export class DB {
 		}
 	}
 
-	private async getPeriod(id: number): Promise<Period> {
+	async getEpochs(): Promise<DBEpoch[]> {
+		try {
+			const epochResult = await this.queryDB<DBEpoch>(`
+				SELECT *
+				FROM epoch
+			`);
+			const epochs = epochResult.rows;
+
+			return epochs;
+		} catch (error) {
+			return error;
+		}
+	}
+
+	async getPeriod(id: number): Promise<Period> {
 		try {
 			const periodResult = await this.queryDB<DBPeriod>(`
 				SELECT *
@@ -156,8 +192,35 @@ export class DB {
 			return error;
 		}
 	}
+	async getPeriods(): Promise<DBPeriod[]> {
+		try {
+			const periodResult = await this.queryDB<DBPeriod>(`
+				SELECT *
+				FROM period
+			`);
+			const period = periodResult.rows;
 
-	private async getEra(id: number): Promise<Era> {
+			return period;
+		} catch (error) {
+			return error;
+		}
+	}
+	async getPeriod_(id: number): Promise<DBPeriod> {
+		try {
+			const periodResult = await this.queryDB<DBPeriod>(`
+				SELECT *
+				FROM period
+				WHERE id = ${id}
+			`);
+			const period = periodResult.rows[0];
+
+			return period;
+		} catch (error) {
+			return error;
+		}
+	}
+
+	async getEra(id: number): Promise<Era> {
 		try {
 			const eraResult = await this.queryDB<DBEra>(`
 				SELECT *
