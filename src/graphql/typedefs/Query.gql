@@ -1,7 +1,14 @@
 type Query {
-  dinos: [Dino]!
-  era(id: Int!): Era!
-  period(id: Int!): Period!
-  periods: [Period]!
+  dino(id: Int!): Dino!
+  dinos(sortBy: String, sortOrder: String, limit: Int, offset: Int): [Dino]!
+
+  # Taxonomy
+  species(sortBy: String, sortOrder: String, limit: Int, offset: Int): [Specie]!
+  families(sortBy: String, sortOrder: String, limit: Int, offset: Int): [Family]!
+  kingdoms(sortBy: String, sortOrder: String, limit: Int, offset: Int): [Kingdom]!
+
+  # Time
+  periods(sortBy: String, sortOrder: String, limit: Int, offset: Int): [Period]!
   epochs(sortBy: String, sortOrder: String, limit: Int, offset: Int): [Epoch]!
+  eras(sortBy: String, sortOrder: String, limit: Int, offset: Int): Era!
 }

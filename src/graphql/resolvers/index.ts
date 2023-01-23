@@ -3,7 +3,9 @@ import { DB } from '/db/index.ts';
 import {
 	DBDino,
 	DBEpoch,
+	DBEra,
 	DBFamily,
+	DBKingdom,
 	DBPeriod,
 	DBSpecie,
 } from '/db/models/types.ts';
@@ -12,22 +14,35 @@ const db = new DB();
 
 export const resolvers = {
 	Query: {
-		async dinos() {
-			return await db.dinos.findAll();
-		},
-		async periods() {
-			return await db.periods.findAll();
-		},
-		async period(_: unknown, { id }: { id: number }) {
+		async dino(_: unknown, { id }: { id: number }) {
+			// TODO: Find by name (flexible property)
 			return await db.periods.find(id);
 		},
-		async era(_: unknown, { id }: { id: number }) {
-			return await db.eras.find(id);
+		async dinos(_: unknown, params: FilterParams<DBDino>) {
+			// FIXME: Validate sort params
+			return await db.dinos.findAll(params);
+		},
+
+		// Taxonomy
+		async species(_: unknown, params: FilterParams<DBSpecie>) {
+			return await db.specie.findAll(params);
+		},
+		async families(_: unknown, params: FilterParams<DBFamily>) {
+			return await db.family.findAll(params);
+		},
+		async kingdoms(_: unknown, params: FilterParams<DBKingdom>) {
+			return await db.kingdom.findAll(params);
+		},
+
+		// Time
+		async periods(_: unknown, params: FilterParams<DBPeriod>) {
+			return await db.periods.findAll(params);
 		},
 		async epochs(_: unknown, params: FilterParams<DBEpoch>) {
-			// TODO: Validate sort params
-
 			return await db.epochs.findAll(params);
+		},
+		async eras(_: unknown, params: FilterParams<DBEra>) {
+			return await db.eras.findAll(params);
 		},
 	},
 	Dino: {
