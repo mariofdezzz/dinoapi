@@ -1,4 +1,6 @@
 type Period {
 	name: String!
+	start: Float!
+	startError: Float!
 	era: Era!
 }
