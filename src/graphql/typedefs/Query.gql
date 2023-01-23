@@ -3,5 +3,5 @@ type Query {
   era(id: Int!): Era!
   period(id: Int!): Period!
   periods: [Period]!
-  epochs: [Epoch]!
+  epochs(sortBy: String, sortOrder: String, limit: Int, offset: Int): [Epoch]!
 }

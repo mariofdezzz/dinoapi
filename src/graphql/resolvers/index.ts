@@ -6,6 +6,7 @@ import {
 	DBSpecie,
 } from '/db/models/types.ts';
 import { DB } from '/db/index.ts';
+import { FilterParams, SortOrder } from '../../db/controllers/types.ts';
 
 const db = new DB();
 
@@ -23,8 +24,10 @@ export const resolvers = {
 		async era(_: unknown, { id }: { id: number }) {
 			return await db.eras.find(id);
 		},
-		async epochs() {
-			return await db.epochs.findAll();
+		async epochs(_: unknown, params: FilterParams<DBEpoch>) {
+			// TODO: Validate sort params
+
+			return await db.epochs.findAll(params);
 		},
 	},
 	Dino: {
