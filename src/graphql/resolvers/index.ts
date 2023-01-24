@@ -47,7 +47,7 @@ export const resolvers = {
 	},
 	Dino: {
 		async epoch(dino: DBDino) {
-			return await db.epochs.find(dino.temporalRange);
+			return await db.epochs.find(dino.epoch);
 		},
 		async specie(dino: DBDino) {
 			return await db.specie.find(dino.specie);

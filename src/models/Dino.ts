@@ -3,7 +3,7 @@ import { Specie } from './taxonomy/Specie.ts';
 
 export interface Dino {
 	name: string;
-	temporalRange: Epoch;
+	epoch: Epoch;
 	specie: Specie;
 	// locations: Continent[];
 	weight: number;

@@ -5,10 +5,10 @@ import { Kingdom } from '@/taxonomy/Kingdom.ts';
 import { Epoch } from '@/time/Epoch.ts';
 import { Period } from '@/time/Period.ts';
 
-export type DBDino = Omit<Omit<Dino, 'specie'>, 'temporalRange'> & {
+export type DBDino = Omit<Omit<Dino, 'specie'>, 'epoch'> & {
 	id: number;
 	specie: number;
-	temporalRange: number;
+	epoch: number;
 };
 
 export type DBSpecie = Omit<Specie, 'family'> & {
